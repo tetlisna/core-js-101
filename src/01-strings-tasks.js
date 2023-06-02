@@ -284,9 +284,9 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(value) {
-  return value.split('')
-}
+// function getCardId(value) {
+//   return value.split('')
+// }
 
 module.exports = {
   concatenateStrings,
