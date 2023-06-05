@@ -277,15 +277,7 @@ function propagateItemsByPositionIndex(/* arr */) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-  return arr.reduce(
-    (acc, v) => {
-      if (acc[0] < v) {
-        acc[0] = v;
-      }
-      return acc;
-    },
-    [0, 0, 0],
-  );
+  return arr.reduce((acc, v) => (acc + v), 0);
 }
 
 /**
@@ -302,7 +294,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.filter((v) => (typeof v === 'number' && v > 0)).length;
+  return arr.filter((v) => typeof v === 'number' && v > 0).length;
 }
 
 /**
@@ -368,8 +360,8 @@ function getFalsyValuesCount(arr) {
  *    [ null, undefined, null ], null => 2
  *    [ true, 0, 1, 'true' ], true => 1
  */
-function findAllOccurrences(/* arr, item */) {
-  throw new Error('Not implemented');
+function findAllOccurrences(arr, item) {
+  return arr.reduce((acc, v) => acc + v.includes(item), 0);
 }
 
 /**
@@ -414,7 +406,12 @@ function toStringList(arr) {
  *    ]
  */
 function sortCitiesArray(arr) {
-  return arr.sort((a, b) => (a.country - b.country));
+  return arr.sort((a, b) => {
+    if (a.country !== b.country) {
+      return a.city.localeCompare(b.city);
+    }
+    return a.country.localeCompare(b.country);
+  });
 }
 
 /**
