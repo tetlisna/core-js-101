@@ -50,7 +50,8 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return (value1 + value2) / 2;
+  const avg = value1 / 2 + value2 / 2;
+  return avg;
 }
 
 /**
@@ -68,8 +69,8 @@ function getAverage(value1, value2) {
  *   (0,0) (1,0)    => 1
  *   (-5,0) (10,-10) => 18.027756377319946
  */
-function getDistanceBetweenPoints(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getDistanceBetweenPoints(x1, y1, x2, y2) {
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
 /**
@@ -106,8 +107,12 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  const dot = x1 * x2 + y1 * y2;
+  const magnitudeA = Math.sqrt(x1 * x1 + y1 * y1);
+  const magnitudeB = Math.sqrt(x2 * x2 + y2 * y2);
+  const angleInRadians = Math.acos(dot / (magnitudeA * magnitudeB));
+  return angleInRadians;
 }
 
 /**
@@ -123,7 +128,7 @@ function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return Number(+value.charAt(-1));
+  return Number(value.toString().slice(-1));
 }
 
 /**
@@ -138,7 +143,7 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-  return parseInt(value, 10);
+  return parseFloat(value, 10);
 }
 
 /**
@@ -175,8 +180,9 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 2  => 1700
  *   1678, 3  => 2000
  */
-function roundToPowerOfTen(/* num, pow */) {
-  throw new Error('Not implemented');
+function roundToPowerOfTen(num, pow) {
+  const newNum = Math.round(num / 10 ** pow);
+  return newNum * 10 ** pow;
 }
 
 /**
@@ -201,8 +207,8 @@ function isPrime(n) {
     return false;
   }
   const m = Math.sqrt(n);
-  for (let i = 2; i < m; i += 1) {
-    if (n % 1 === 0) {
+  for (let i = 2; i <= m; i += 1) {
+    if (n % i === 0) {
       return false;
     }
   }
@@ -225,9 +231,10 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  const integer = parseInt(value, 10);
-  if (typeof value === 'number') {
-    return integer;
+  if (
+    typeof parseInt(value, 10) === 'number' && !Number.isNaN(+value) && value !== null
+  ) {
+    return parseInt(value, 10);
   }
   return def;
 }
