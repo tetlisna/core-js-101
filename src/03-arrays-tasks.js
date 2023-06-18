@@ -141,8 +141,10 @@ function getStringsLength(arr) {
  *    [ 1, 3, 4, 5 ], 2, 1  => [ 1, 2, 3, 4, 5 ]
  *    [ 1, 'b', 'c'], 'x', 0  => [ 'x', 1, 'b', 'c' ]
  */
-function insertItem(/* arr, item, index */) {
-  throw new Error('Not implemented');
+
+function insertItem(arr, item, index) {
+  arr.splice(index, 0, item);
+  return arr;
 }
 
 /**
@@ -170,11 +172,7 @@ function getHead(arr, n) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'b', 'c', 'd' ]
  */
 function getTail(arr, n) {
-  const newArr = [];
-  for (let i = 0; i < n; i += 1) {
-    newArr.push(arr.pop(i));
-  }
-  return newArr.reverse();
+  return arr.slice(-n);
 }
 
 /**
@@ -198,9 +196,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  const jsonString = JSON.stringify(arr, null, 2);
-  return jsonString;
-  // throw new Error('Not implemented');
+  return arr.map((v) => v.join(',')).join('\n');
 }
 
 /**
@@ -233,7 +229,14 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  return arr.reduce((acc, v, _, array) => array[acc + v]);
+  return arr.reduce((acc, curr) => {
+    if (!acc.length) {
+      acc.push(curr);
+    } else {
+      acc.push(curr + acc[acc.length - 1]);
+    }
+    return acc;
+  }, []);
 }
 
 /**
@@ -265,8 +268,8 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr.map((v, i) => Array(i + 1).fill(v)).flat();
 }
 
 /**
@@ -378,7 +381,13 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurrences(arr, item) {
-  return Number(arr.reduce((acc, v) => acc + v.includes(item), 0));
+  return arr.reduce((acc, curr) => {
+    if (curr === item) {
+      // eslint-disable-next-line no-param-reassign
+      acc += 1;
+    }
+    return acc;
+  }, 0);
 }
 
 /**
@@ -446,16 +455,9 @@ function sortCitiesArray(array) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  const arr = [];
-  for (let i = 0; i < n; i += 1) {
-    arr[i] = [0];
-    for (let j = 0; j < n; j += 1) {
-      arr[0][0] = 1;
-      arr[i][j] = 0;
-    }
-    arr[i][i] = 1;
-  }
-  return arr;
+  return Array
+    .from({ length: n }, (_, i) => Array
+      .from({ length: n }, (__, j) => (i === j ? 1 : 0)));
 }
 
 /**
@@ -472,11 +474,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  const arr = [];
-  for (let i = start; i <= end; i += 1) {
-    arr.push(i);
-  }
-  return arr;
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
 /**
@@ -525,11 +523,17 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-  // throw new Error('Not implemented');
-  const mapOfArray = new Map(array);
-  mapOfArray.set(keySelector, valueSelector);
-  // console.log(mapOfArray,'mapOfArray');
-  return mapOfArray;
+  return array.reduce((map, item) => {
+    const key = keySelector(item);
+    const value = valueSelector(item);
+
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    map.get(key).push(value);
+
+    return map;
+  }, new Map());
 }
 
 /**
@@ -545,8 +549,8 @@ function group(array, keySelector, valueSelector) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return [].concat(...arr.map(childrenSelector));
 }
 
 /**
@@ -562,7 +566,12 @@ function selectMany(/* arr, childrenSelector */) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  return arr.forEach((v) => v === indexes);
+  if (indexes.length === 0) {
+    return arr;
+  }
+  const firstIdx = indexes.shift();
+  const nestedArr = arr[firstIdx];
+  return getElementByIndexes(nestedArr, indexes);
 }
 
 /**
