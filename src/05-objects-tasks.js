@@ -53,7 +53,12 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-  return (typeof proto === 'function') ? json : null;
+  const obj = Object.create(proto);
+  const data = JSON.parse(json);
+  Object.entries(data).forEach(([key, value]) => {
+    obj[key] = value;
+  });
+  return obj;
 }
 
 /**
