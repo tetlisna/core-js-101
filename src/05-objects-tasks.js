@@ -115,39 +115,81 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
-const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
-  },
+// const cssSelectorBuilder = {
+//   element(value) {
+//     this.elementV = value;
+//     return this.JSON.stringify();
+//   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
-  },
+//   id(value) {
+//     this.id = value.JSON.stringify();
+//     return new CssSelectorBuilder();
+//   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
-  },
+//   class(value) {
+//     this.class = value.stringify();
+//     return new CssSelectorBuilder();
+//   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
-  },
+//   attr(value) {
+//     this.attr = value.stringify();
+//     return new CssSelectorBuilder();
+//   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
-  },
+//   pseudoClass(value) {
+//     this.pseudoClass = value.stringify();
+//     return new CssSelectorBuilder();
+//   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
-  },
+//   pseudoElement(value) {
+//     this.pseudoElement = value.stringify();
+//     return new CssSelectorBuilder();
+//   },
+//   // combine(selector1, combinator, selector2) {
+//   //   this.combine = selector1 + combinator + selector2;
+//   //   return new CssSelectorBuilder();
+//   // },
+// };
+// class CssSelectorBuilder {
+//   element(value) {
+//     this.tag = value;
+//     return this;
+//   }
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
-  },
-};
+//   id(value) {
+//     this.id = value.JSON.stringify();
+//     return this;
+//   }
 
+//   class(value) {
+//     this.class = value.stringify();
+//     return this;
+//   }
+
+//   attr(value) {
+//     this.attr = value.stringify();
+//     return this;
+
+//   }
+
+//   pseudoClass(value) {
+//     this.pseudoClass = value.stringify();
+//     return this;
+//   }
+
+//   pseudoElement(value) {
+//     this.pseudoElement = value.stringify();
+//     return this;
+//   }
+//   combine(selector1, combinator, selector2) {
+//     this.combine = selector1 + combinator + selector2;
+//     return this;
+//   }
+// }
+// const builder = new CssSelectorBuilder();
 module.exports = {
   Rectangle,
   getJSON,
   fromJSON,
-  cssSelectorBuilder,
+  // cssSelectorBuilder,
 };
