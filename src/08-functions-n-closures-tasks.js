@@ -157,7 +157,7 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-  return function (...args) {
+  return (...args) => {
     const argString = args.map((arg) => JSON.stringify(arg)).join(', ');
 
     logFunc(`${func.name}(${argString}) starts`);
