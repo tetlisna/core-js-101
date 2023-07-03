@@ -158,7 +158,7 @@ function retry(func, attempts) {
  */
 function logger(func, logFunc) {
   return (...args) => {
-    const argString = args.map((arg) => JSON.stringify(arg)).join(', ');
+    const argString = args.map((arg) => JSON.stringify(arg)).join(',');
 
     logFunc(`${func.name}(${argString}) starts`);
     const result = func.apply(this, args);
@@ -209,8 +209,9 @@ function partialUsingArguments(fn, ...args1) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let times;
+  return () => (times > 1 ? startFrom + times : startFrom``);
 }
 
 

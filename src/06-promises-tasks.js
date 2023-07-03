@@ -57,7 +57,7 @@ function willYouMarryMe(isPositiveAnswer) {
  *
  */
 function processAllPromises(array) {
-  return array.map((promise) => promise);
+  return Promise.all(array);
 }
 
 /**
@@ -79,8 +79,20 @@ function processAllPromises(array) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return new Promise((resolve, reject) => {
+    if (array.length === 0) {
+      reject(new Error('Empty array'));
+    } else {
+      Promise.race(array)
+        .then((value) => {
+          resolve(value);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    }
+  });
 }
 
 /**
@@ -100,8 +112,26 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+
+function chainPromises(array, action) {
+  let result = null;
+
+  const processPromise = (index) => {
+    if (index >= array.length) {
+      return Promise.resolve(result);
+    }
+
+    const promises = array[index];
+
+    return promises
+      .then((value) => {
+        result = result === null ? value : action(result, value);
+        return processPromise(index + 1);
+      })
+      .catch(() => processPromise(index + 1));
+  };
+
+  return processPromise(0);
 }
 
 module.exports = {
