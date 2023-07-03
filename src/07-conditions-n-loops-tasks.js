@@ -413,16 +413,17 @@ function getCommonDirectoryPath(pathes) {
 
   const splitPaths = pathes.map((path) => path.split('/'));
 
+  const commonPathSegments = [];
   for (let i = 0; i < splitPaths[0].length; i += 1) {
     const currentDir = splitPaths[0][i];
-    for (let j = 1; j < splitPaths.length; j += 1) {
-      if (splitPaths[j][i] !== currentDir) {
-        return `${splitPaths[0].slice(0, i).join('/')}/`;
-      }
+    if (splitPaths.every((splitPath) => splitPath[i] === currentDir)) {
+      commonPathSegments.push(currentDir);
+    } else {
+      break;
     }
   }
 
-  return `${splitPaths[0].join('/')}/`;
+  return commonPathSegments.length > 0 ? `${commonPathSegments.join('/')}/` : '';
 }
 
 /**
